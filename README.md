@@ -19,3 +19,14 @@ A yellow circle may be thought of as left and right lane markings. While both sh
 **Red circles:** A red circle is part of class 3 only if its center is in the bottom half of the image. Otherwise it shall simply be treated as background (class 0).
 Red circles thus may be interpreted as cars or street in an autonomous driving setting. As even though the sky may sometimes appear to share street features, we can be confident that the street will only ever be found in the bottom half of the image. 
 
+
+## Extending the Convolution
+
+In their 2018 paper Lui st al. identified what they called "An intriguing failing of convolutional neural networks and the CoordConv solution" (https://arxiv.org/pdf/1807.03247.pdf). Expanding on their works which were mostly based on coordinate regression, this repository provides a PyTorch implementation of a slightly more efficient approach with mathematically similiar properties. Lui et al.'s approach is based on concatenating two more channels to the convolution input which contain hard coded values of x and y coordinates. These channels are then treated just like the other input channels and convolved with the same sized filter kernels. 
+This repositories approach first calculates the output size of the convolutional layer and then constructs similiar coordinate channels whose entries are the relative x and y positions of the respective filter kernel center. Opposed to using same sized kernel parameters to convolve the coordinate maps, we will only use a single value per coodinate channel and Filter. As such we can think of the new parameters as a Coordinate Bias for each Convolutional Filter. In settings with standard 3x3 Filterkernels this new operation reduces the additional parameters by roughly 90% (increased benefit with increased filter kernel size).
+
+![](/images/cc.png?raw=true "Dataset")
+
+
+
+
