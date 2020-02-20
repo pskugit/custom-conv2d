@@ -1,20 +1,13 @@
-import numpy as np
-import torch
-from models.fcn import VGGNet, FCNmy, cfg, ranges
-import torch.nn as nn
-import torch.optim as optim
-from models.customconv import MyConv2d, Conv2dXY
-import os
-import torch
-import math
-import datetime
-import logging
-from pathlib import Path
 import argparse
-import cv2
-from torch.utils.data import Dataset, DataLoader
-from data.circles_semseg import CirclesSemseg
+import numpy as np
 import matplotlib.pyplot as plt
+import torch
+import torch.nn as nn
+
+from torch.utils.data import Dataset, DataLoader
+from pathlib import Path
+from models.fcn import VGGNet, FCNmy, cfg, ranges
+from data.circles_semseg import CirclesSemseg
 
 def label_to_img(label):
     cls_to_color = {
@@ -27,15 +20,13 @@ def label_to_img(label):
         img[np.where(label==i)] = cls_to_color[i]
     return img
 
-parser = argparse.ArgumentParser(description='My Argoverse Dataset')
-parser.add_argument("--v", action="store_true", help="set to have verbose outputs")
+parser = argparse.ArgumentParser(description='Evaluation')
 parser.add_argument("--dataroot", default="/home/skudlik/xyexp/circle_4cls/circles/",
                     help="Folder containing my circles")
 parser.add_argument("--labelroot", default="/home/skudlik/xyexp/circle_4cls/circles_labels/",
                     help="Folder containing labels")
 parser.add_argument('--batch_size', type=int, default=2, help='Batch Size during training [default: 2]')
 parser.add_argument('--epochs', type=int, default=2, help='Epochs [default: 10]')
-parser.add_argument('--lr', type=int, default=1e-3, help='learning rate [default: 0.001]')
 parser.add_argument('--n_class', type=int, default=4, help='Point Number [default: 3]')
 parser.add_argument("--xyconv", action="store_true", help="")
 parser.add_argument('--exp_dir', type=str, default="/home/skudlik/xyexp/experiments/", help='Log path [default: None]')
@@ -43,12 +34,10 @@ parser.add_argument('--exp_name', type=str, default="semseg_xy_4cls", help='Log 
 args = parser.parse_args()
 print(args)
 
-
 experiment_dir = Path(args.exp_dir)
 experiment_dir = experiment_dir.joinpath(args.exp_name)
 checkpoints_dir = experiment_dir.joinpath('checkpoints/')
 loadpath = str(checkpoints_dir) + '/model.pth'
-
 
 # make dataset and loader
 val_dataset = CirclesSemseg(args.dataroot, args.labelroot, "val")
@@ -64,17 +53,16 @@ model.load_state_dict(checkpoint['model_state_dict'])
 criterion = nn.CrossEntropyLoss()
 count = 1
 show = True
+# load 'count' batches and show results
 with torch.no_grad():
     for batch_id, (img, label) in enumerate(val_loader):
         if batch_id > count:
             break
         img, label = img.cuda(), label.cuda().long()
         logits = model(img)
-
         pred_class = logits.cpu().data.max(1)[1]
-
         loss = criterion(logits, label)
-        print(loss)
+        print("loss",loss)
         if show:
             for i in range(args.batch_size):
                 plt.imshow(img[i].permute(1, 2, 0).cpu().numpy())

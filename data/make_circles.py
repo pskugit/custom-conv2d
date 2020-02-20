@@ -1,20 +1,12 @@
-import os
-import torch
-import math
-import logging
-import argparse
-import numpy as np
 import cv2
-import random
 import tqdm
-import matplotlib.pyplot as plt
-from skimage import img_as_ubyte
-
+import random
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
+
+from skimage import img_as_ubyte
 from itertools import product, count
-from matplotlib.colors import LinearSegmentedColormap
+
 
 def label_to_img(label):
     cls_to_color = {
@@ -73,12 +65,14 @@ def generate_2D_perlin_noise(size, ns):
         t[i, :, j, :] = np.matmul(np.matmul(d0, at), d1).reshape(ns, ns)
     return m
 
+### SET PARAMETERS HERE
+
 savepath = "/home/skudlik/xyexp/circle_4cls/"
 split = "val"
 show = False
-
 num = 5000 if split == "train" else 2500
 num = 5 if show else num
+
 for i in tqdm.tqdm(range(num)):
     img_size = 128
     # noise

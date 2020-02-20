@@ -1,25 +1,25 @@
 import os
-import torch
-import math
+import cv2
 import logging
 import argparse
 import numpy as np
-import cv2
-from torch.utils.data import Dataset, DataLoader
 import matplotlib.pyplot as plt
+
 from torchvision.transforms import ToTensor
+from torch.utils.data import Dataset, DataLoader
+
 
 class CirclesSemseg(Dataset):
     """
     :param
     split: string
         can be 'train', 'val' or 'test'
-    dataset_root: string
+    data_root: string
         root path to the datasets main folder
-    max_points: int
-        maximal lidar points per datapoint. 0 for no limit
+    label_root: string
+        root path to the label folder
 
-    Returns lidar points in B, N, C Format
+    Returns an image and a segmentation map
     """
     def __init__(self, data_root, label_root, split, get_paths=False):
         super().__init__()
@@ -33,7 +33,6 @@ class CirclesSemseg(Dataset):
         self.split = split
         self.file_list = os.listdir(data_root+"/"+split)
         self.label_list = os.listdir(label_root+"/"+split)
-        #self.label_list.remove("cls_labels.npy")
         assert len(self.label_list) == len(self.file_list)
         self.img_size = np.array(cv2.imread(self.data_root+"/"+self.split+"/"+self.file_list[0])).shape[1]
 
@@ -51,11 +50,11 @@ class CirclesSemseg(Dataset):
         return len(self.file_list)
 
     def get_label_r_weigths(self):
-        return np.array([0.23100237137590063, 0.8818010516172283, 0.8868195031003854])
+        return np.array([1,1,1])   # TODO: set proper weights
 
     def get_num_classes(self):
         """Get the number of classes for this dataset"""
-        return 3
+        return 4
 
     def get_index_fullpaths(self, idx):
         pass
@@ -65,8 +64,7 @@ class CirclesSemseg(Dataset):
 
 
 if __name__ == "__main__":
-
-    parser = argparse.ArgumentParser(description='My Argoverse Dataset')
+    parser = argparse.ArgumentParser(description='Load a Circle Semseg Dataset')
     parser.add_argument("--v", action="store_true", help="set to have verbose outputs")
     parser.add_argument("--dataroot", default="/home/skudlik/xyexp/circle_small/circles/", help="Folder containing my circles")
     parser.add_argument("--labelroot", default="/home/skudlik/xyexp/circle_small/circles_labels/", help="Folder containing labels")

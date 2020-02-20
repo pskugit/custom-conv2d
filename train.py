@@ -1,22 +1,17 @@
+import time
+import logging
+import argparse
+import datetime
 import numpy as np
 import torch
-from models.fcn import VGGNet, FCNmy, cfg, ranges
 import torch.nn as nn
 import torch.optim as optim
-from models.customconv import MyConv2d, Conv2dXY
-import os
-import torch
-import math
-import time
-import datetime
-import logging
-from pathlib import Path
 import matplotlib.pyplot as plt
-import argparse
-import cv2
+
+from pathlib import Path
 from torch.utils.data import Dataset, DataLoader
 from data.circles_semseg import CirclesSemseg
-
+from models.fcn import VGGNet, FCNmy, cfg, ranges
 
 parser = argparse.ArgumentParser(description='Train xy experiment')
 parser.add_argument("--v", action="store_true", help="set to have verbose outputs")
