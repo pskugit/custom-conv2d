@@ -40,8 +40,10 @@ class Conv2dXY(torch.nn.modules.conv._ConvNd):
             in_channels, out_channels, kernel_size, stride, padding, dilation,
             False, _pair(0), groups, bias, padding_mode)
         if xy_bias:
-            self.xy_bias = Parameter(torch.Tensor(out_channels, in_channels, 2))
+            #self.xy_bias = Parameter(torch.Tensor(out_channels, in_channels, 2))
+            self.xy_bias = Parameter(torch.Tensor(out_channels, 2))
             self.init_xy_bias()
+            print("xy_bias_shape:",self.xy_bias.shape)
         else:
             self.xy_bias = None
 
@@ -139,7 +141,10 @@ def conv2d_xy_0(input, weight, bias=None, xy_bias=None, stride=(1,1), padding=(1
     return patches.float()
 
 # xy Convolution
-def conv2d_xy(input, weight, bias=None, xy_bias=None, stride=(1,1), padding=(1,1), dilation=(1,1)):
+def conv2d_xy_1(input, weight, bias=None, xy_bias=None, stride=(1,1), padding=(1,1), dilation=(1,1)):
+    """
+    Uses (out_channel, 2) as xy_bias
+    """
     batch_size, in_channels, in_h, in_w = input.shape
     out_channels, in_channels, kh, kw = weight.shape
     out_h = int((in_h - kh + 2 * padding[0]) / stride[0] + 1)
@@ -166,6 +171,36 @@ def conv2d_xy(input, weight, bias=None, xy_bias=None, stride=(1,1), padding=(1,1
     out = out_unf.view(batch_size, out_channels, out_h, out_w)
     return out.float()
 
+
+# xy Convolution
+def conv2d_xy(input, weight, bias=None, xy_bias=None, stride=(1, 1), padding=(1, 1), dilation=(1, 1)):
+    """
+    Uses (out_channel, 2) as xy_bias
+    """
+    batch_size, in_channels, in_h, in_w = input.shape
+    out_channels, in_channels, kh, kw = weight.shape
+    out_h = int((in_h - kh + 2 * padding[0]) / stride[0] + 1)
+    out_w = int((in_w - kw + 2 * padding[1]) / stride[1] + 1)
+
+    unfold = torch.nn.Unfold(kernel_size=(kh, kw), dilation=dilation, padding=padding, stride=stride)
+    inp_unf = unfold(input).double()
+    w_ = weight.view(weight.size(0), -1).t().double()
+
+    if bias is None:
+        out_unf = inp_unf.transpose(1, 2).matmul(w_).transpose(1, 2)
+    else:
+        out_unf = (inp_unf.transpose(1, 2).matmul(w_) + bias).transpose(1, 2)
+
+    if xy_bias is not None:
+        xy_map = get_xy_map(out_h, out_w).to(xy_bias.device)
+        xy_map = xy_map.permute(2, 0, 1)
+        xy_map = xy_map.view(2, -1).float()
+        xy_b_ = xy_bias.view(xy_bias.size(0), -1).t().float()
+        xy_out = xy_map.transpose(0, 1).matmul(xy_b_).transpose(0, 1)
+        out_unf += xy_out
+
+    out = out_unf.view(batch_size, out_channels, out_h, out_w)
+    return out.float()
 
 def get_xy_map(out_h, out_w):
     y_map = torch.arange(out_h).float() / (out_h - 1)

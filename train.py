@@ -30,7 +30,7 @@ parser.add_argument('--lr', type=int, default=1e-3, help='learning rate [default
 parser.add_argument('--n_class', type=int, default=4, help='Point Number [default: 3]')
 parser.add_argument("--xyconv", action="store_true", help="")
 parser.add_argument('--exp_dir', type=str, default="/home/skudlik/xyexp/experiments/", help='Log path [default: None]')
-parser.add_argument('--exp_name', type=str, default="semseg_4cls", help='Log path [default: None]')
+parser.add_argument('--exp_name', type=str, default="semseg_xy_4cls_less", help='Log path [default: None]')
 
 args = parser.parse_args()
 print(args)
@@ -106,7 +106,7 @@ for epoch in range(args.epochs):
             loss_sum += loss
 
     print('Epoch %d Validation mean loss: %f' % (epoch, loss_sum / num_val_batches))
-    vallosses.extend([loss_sum / num_val_batches]*(num_train_batches*args.batch_size))
+    vallosses.extend([loss_sum / num_val_batches]*num_train_batches)
 
     savepath = str(checkpoints_dir) + '/model.pth'
     state = {
