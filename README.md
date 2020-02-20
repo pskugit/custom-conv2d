@@ -37,7 +37,7 @@ For the experiment, a standard Fully Convolutional Network Architecture with ski
 For the vanilla Network, the regular torch.nn.Con2d layer has been used, while for the second nework, a Coordinate Bias was added to all convolution layers in the encoding path. The decoding path remained the same for both networks.
 
 ![](/images/eval.png?raw=true "Qualitative evaluation")
-<p style="text-align: right"> right: zoomed version </p>
+_right: zoomed version_
 
 
 Both networks were trained on the Dataset with 5000 images for 2 epochs, each. The Validation loss was calculated after each epoch (thus two times). As can be seen in the loss curves, the network with coordinate bias learns much quicker and plateaus on a significantly lower loss compared to the vanilla network. 
