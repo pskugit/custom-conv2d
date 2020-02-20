@@ -1,5 +1,20 @@
 # custom-conv2d
-A study for a custom convolution layer in which the x and y components of an image pixel are added to the kernel inputs.
+> A study for a custom convolution layer in which the x and y components of an image pixel are added to the kernel inputs.
+
+## Prerequisites
+
+The code is based on pytorch and numpy.
+Dataset creation uses opencv-pyhon and sckikit-image.
+Visualizations use matplotlib.pyplot.
+
+```
+$ pip install torch
+$ pip install numpy 
+$ pip install pathlib
+$ pip install argparse
+$ pip install opencv-pyhon
+$ pip install sckikit-image
+```
 
 ## Intro 
 
@@ -60,3 +75,8 @@ Contrastly, the network with the coordinate bias seems to utilize the additional
 * Most modern achitectures do not use a bias in their conv2d layers as such will have a gradient of zero after being passed through a BatchNorm layer. It should be investigated if the same happens to the Coordinate Bias.
 * Clearly the Coordinate enriched networks outperforms the vanilla version. Might this performance increase, however, only be caused by having additional parameters?
 * Further it is also to be researche if and how the intriduced approach differs from the 2018 approach of Lui et al.
+
+
+### Running the scrips
+
+-- detailed instructions follow --
