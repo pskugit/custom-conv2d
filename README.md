@@ -43,7 +43,10 @@ Both networks were trained on the Dataset with 5000 images for 2 epochs, each. T
 
 ## Evaluation (Qualitative)
 
-![](/images/cc_img.png?raw=true "") ![](/images/vanilla.png?raw=true "") 
+Solarized dark             |  Solarized Ocean
+:-------------------------:|:-------------------------:
+![](/images/cc_img.png?raw=true "")  |  ![](/images/vanilla.png?raw=true "") 
+
 
 
 ## Open Questions
