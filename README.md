@@ -12,6 +12,7 @@ $ pip install torch
 $ pip install numpy 
 $ pip install pathlib
 $ pip install argparse
+$ pip install matplotlib
 $ pip install opencv-pyhon
 $ pip install sckikit-image
 ```
