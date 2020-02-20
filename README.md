@@ -25,8 +25,25 @@ Red circles thus may be interpreted as cars or street in an autonomous driving s
 In their 2018 paper Lui st al. identified what they called "An intriguing failing of convolutional neural networks and the CoordConv solution" (https://arxiv.org/pdf/1807.03247.pdf). Expanding on their works which were mostly based on coordinate regression, this repository provides a PyTorch implementation of a slightly more efficient approach with mathematically similiar properties. Lui et al.'s approach is based on concatenating two more channels to the convolution input which contain hard coded values of x and y coordinates. These channels are then treated just like the other input channels and convolved with the same sized filter kernels. 
 This repositories approach first calculates the output size of the convolutional layer and then constructs similiar coordinate channels whose entries are the relative x and y positions of the respective filter kernel center. Opposed to using same sized kernel parameters to convolve the coordinate maps, we will only use a single value per coodinate channel and Filter. As such we can think of the new parameters as a Coordinate Bias for each Convolutional Filter. In settings with standard 3x3 Filterkernels this new operation reduces the additional parameters by roughly 90% (increased benefit with increased filter kernel size).
 
-![](/images/cc.png?raw=true "Dataset")
+![](/images/cc.png?raw=true "Convolution with coordinate bias")
+
+The Figure above shows the process of adding the Coordinate Bias. The left part is the standard convolutional operation over a 7x7x3 (H_in,W_in,in_channels) input image with TWO 3x3 Kernel, stride=3, padding=1. This produces a resulting featuremap of size 3x3x2 (H_out,W_out,num_filters). 
+The right part shows the constructed 3x3x2 Coordinate maps, where one contains the relative y and the other the relative x components. These Coordinate Maps are multiplied with the learned Coordinate Bias values, resulting in a feature map that has the same dimensions as the one from the standard convolution path. Both outputs will finally be summed.
 
 
+## Evaluation (Quantitative)
+
+For the experiment, a standard Fully Convolutional Network Architecture with skip-connections was used. The encoder side is a small Network derived from VGG11 (then called VGG9), and the decoder is a matching deconvolution path. 
+For the vanilla Network, the regular torch.nn.Con2d layer has been used, while for the second nework, a Coordinate Bias was added to all convolution layers in the encoding path. The decoding path remained the same for both networks.
+
+![](/images/eval.png?raw=true "Qualitative evaluation")
+
+Both networks were trained on the Dataset with 5000 images for 2 epochs, each. The Validation loss was calculated after each epoch (thus two times). As can be seen in the loss curves, the network with coordinate bias learns much quicker and plateaus on a significantly lower loss compared to the vanilla network. 
 
 
+## Evaluation (Qualitative)
+
+![](/images/cc_img.png?raw=true "") ![](/images/vanilla.png?raw=true "") 
+
+
+## Open Questions
