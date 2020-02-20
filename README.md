@@ -43,9 +43,9 @@ Both networks were trained on the Dataset with 5000 images for 2 epochs, each. T
 
 ## Evaluation (Qualitative)
 
-Solarized dark             |  Solarized Ocean
-:-------------------------:|:-------------------------:
-![](/images/cc_img.png?raw=true "")  |  ![](/images/vanilla.png?raw=true "") 
+Vanilla Network Predictions           |  Coordinate Network Predictions 
+:------------------------------------:|:------------------------------------:
+![](/images/vanilla.png?raw=true "")  |  ![](/images/cc_img.png?raw=true "") 
 
 
 
