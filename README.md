@@ -42,6 +42,7 @@ In their 2018 paper Lui st al. identified what they called "An intriguing failin
 This repositories approach first calculates the output size of the convolutional layer and then constructs similiar coordinate channels whose entries are the relative x and y positions of the respective filter kernel center. Opposed to using same sized kernel parameters to convolve the coordinate maps, we will only use a single value per coodinate channel and Filter. As such we can think of the new parameters as a Coordinate Bias for each Convolutional Filter. In settings with standard 3x3 Filterkernels this new operation reduces the additional parameters by roughly 90% (increased benefit with increased filter kernel size).
 
 ![](/images/cc.png?raw=true "Convolution with coordinate bias")
+_(left part credited to http://cs231n.github.io/convolutional-networks/)_
 
 The Figure above shows the process of adding the Coordinate Bias. The left part is the standard convolutional operation over a 7x7x3 (H_in,W_in,in_channels) input image with TWO 3x3 Kernel, stride=3, padding=1. This produces a resulting featuremap of size 3x3x2 (H_out,W_out,num_filters). 
 The right part shows the constructed 3x3x2 Coordinate maps, where one contains the relative y and the other the relative x components. These Coordinate Maps are multiplied with the learned Coordinate Bias values, resulting in a feature map that has the same dimensions as the one from the standard convolution path. Both outputs will finally be summed.
@@ -78,6 +79,5 @@ Contrastly, the network with the coordinate bias seems to utilize the additional
 * Further it is also to be researche if and how the intriduced approach differs from the 2018 approach of Lui et al.
 
 
-### Running the scrips
 
--- detailed instructions follow --
+
