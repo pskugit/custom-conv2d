@@ -43,7 +43,7 @@ Both networks were trained on the Dataset with 5000 images for 2 epochs, each. T
 
 ## Evaluation (Qualitative)
 
-Vanilla Network Predictions           |  Coordinate Network Predictions 
+Vanilla Network Predictions (Input, Label, Pred)          |  Coordinate Network Predictions (Input, Label, Pred)
 :------------------------------------:|:------------------------------------:
 ![](/images/vanilla.png?raw=true "")  |  ![](/images/cc_img.png?raw=true "") 
 
