@@ -47,6 +47,14 @@ Vanilla Network Predictions           |  Coordinate Network Predictions
 :------------------------------------:|:------------------------------------:
 ![](/images/vanilla.png?raw=true "")  |  ![](/images/cc_img.png?raw=true "") 
 
+As for the qualitative evaluation, one can easiliy recognize that the vannilla network indeed learns that yellow circles belong to either class 1 or class 2, however it struggles to assign the pixels correctly with respect to their x-position. 
+The same can been seen for the red circle, for which the network seems usure if it belongs to the background class (like red circles in the top half of the image) or the actual class 3 (like red circles in the bottom half should). 
+
+Contrastly, the network with the coordinate bias seems to utilize the additional inputs to recreate the labels almost perfectly after training for the same number of epochs. 
 
 
 ## Open Questions
+
+* Most modern achitectures do not use a bias in their conv2d layers as such will have a gradient of zero after being passed through a BatchNorm layer. It should be investigated if the same happens to the Coordinate Bias.
+* Clearly the Coordinate enriched networks outperforms the vanilla version. Might this performance increase, however, only be caused by having additional parameters?
+* Further it is also to be researche if and how the intriduced approach differs from the 2018 approach of Lui et al.
