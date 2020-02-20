@@ -60,6 +60,12 @@ _right: zoomed version_
 Both networks were trained on the Dataset with 5000 images for 2 epochs, each. The Validation loss was calculated after each epoch (thus two times). As can be seen in the loss curves, the network with coordinate bias learns much quicker and plateaus on a significantly lower loss compared to the vanilla network. 
 
 
+Vanilla Network Class Recall          |  Coordinate Network Class Recall
+:------------------------------------:|:------------------------------------:
+![](/images/class_recall.png?raw=true "")  |  ![](/images/class_recall_xy.png?raw=true "") 
+
+The plots aboove show the class specific recall for the two networks. It is clear, that the vanilla network has learned to decide between circle and background, nut it has not yet learned the semantic of the circles. The network with coordinate bias on the other hand scores almost perfectly already.
+
 ## Evaluation (Qualitative)
 
 Vanilla Network Predictions (Input, Label, Pred)          |  Coordinate Network Predictions (Input, Label, Pred)
