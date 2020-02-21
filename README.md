@@ -80,9 +80,9 @@ Contrastly, the network with the coordinate bias seems to utilize the additional
 
 ## Open Questions
 
-* Most modern achitectures do not use a bias in their conv2d layers as such will have a gradient of zero after being passed through a BatchNorm layer. It should be investigated if the same happens to the Coordinate Bias.
-* Clearly the Coordinate enriched networks outperforms the vanilla version. Might this performance increase, however, only be caused by having additional parameters?
-* Further it is also to be researche if and how the intriduced approach differs from the 2018 approach of Lui et al.
+* Most modern achitectures do not use a bias in their conv2d layers as such will have a gradient of zero after being passed through a BatchNorm layer. It should be explained why (and if) this seems to not happen for the case of the Coordinate Bias. 
+* Clearly the coordinate enriched network outperforms the vanilla version. Might this performance increase, however, only be caused by having additional parameters?
+* Further it is also to be researched if and how the introduced approach differs from the 2018 approach of Lui et al. in term of quality and speed.
 
 
 
