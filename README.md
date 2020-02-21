@@ -64,7 +64,7 @@ Vanilla Network Class Recall          |  Coordinate Network Class Recall
 :------------------------------------:|:------------------------------------:
 ![](/images/class_recall.png?raw=true "")  |  ![](/images/class_recall_coord.png?raw=true "") 
 
-The plots aboove show the class specific recall for the two networks. It is clear, that the vanilla network has learned to decide between circle and background, nut it has not yet learned the semantic of the circles. The network with coordinate bias on the other hand scores almost perfectly already.
+The plots above show the class specific recall for the two networks. It is clear, that the vanilla network has learned to decide between circle and background, but it has not yet learned the semantic of the circles. The network with coordinate bias on the other hand scores almost perfectly already.
 
 ## Evaluation (Qualitative)
 
